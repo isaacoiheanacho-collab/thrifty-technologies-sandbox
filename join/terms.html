@@ -617,12 +617,13 @@
         <p>10.9. The Circle Rules must explain how the Circle will deal with missed or late Contributions, withdrawal requests, defaults and a Co-Saver who receives a Payout but subsequently fails to fulfil their remaining Contribution obligations.</p>
         <p>10.10. Thrifty is not responsible for a shortfall arising from a Co-Saver's default, a Community Admin's failure to administer the Circle properly or the misappropriation of funds by a person controlling the Circle Account, except to the extent that the loss is caused by Thrifty's own breach of its legal obligations.</p>
 
+        <div role="note" style="margin:16px 0;padding:14px 16px;border-left:4px solid #008b61;background:#eef8f3;border-radius:8px;"><strong>Sandbox trial terms:</strong> This sandbox is limited to one circle with five co-savers and five weekly cycles. The platform maintenance fee is 0% for this trial. The annual TVC rate is 9.09%, applied weekly. These trial-specific terms override any general fee or cycle wording below where they differ.</div>
         <h4>11. Time value collection (TVC)</h4>
         <p>11.1. The Platform incorporates a Time Value Collection adjustment ("TVC") into the calculation of Savings Circle Payouts.</p>
         <p>11.2. TVC is intended to recognise the difference in collection timing between Co-Savers occupying different Collection Positions in a Circle.</p>
         <p>11.3. The annual TVC rate is 9.09% per year.</p>
-        <p>11.4. The monthly rate used in the calculation is:</p>
-        <div class="formula">r = 0.02 / 12</div>
+        <p>11.4. For this five-week sandbox trial, the weekly rate used in the calculation is:</p>
+        <div class="formula">r = 0.0909 / 52</div>
         <p>11.5. The TVC calculation uses the number of Co-Savers in the Circle, the monthly Contribution amount, the Co-Saver's Collection Position and the Circle's pivot position.</p>
         <p>11.6. The formula is as follows:</p>
         <p><strong>A. Base Pool</strong></p>
@@ -630,7 +631,7 @@
         <p><strong>B. Pivot Position</strong></p>
         <div class="formula">Pivot = (N + 1) / 2</div>
         <p><strong>C. TVC Adjustment</strong></p>
-        <div class="formula">Adjustment = (Pivot − T) × M × r × N</div>
+        <div class="formula">Adjustment = (T − Pivot) × M × r × N</div>
         <p><strong>D. Adjusted Payout</strong></p>
         <div class="formula">P_net = P + Adjustment</div>
         <p><strong>E. Equivalent Factored Formula</strong></p>
@@ -638,13 +639,13 @@
         <p>11.7. For this calculation:</p>
         <ul>
           <li><strong>N</strong> = total number of Co-Savers in the Circle;</li>
-          <li><strong>M</strong> = monthly Contribution per Co-Saver;</li>
+          <li><strong>M</strong> = weekly Contribution per Co-Saver;</li>
           <li><strong>T</strong> = the Co-Saver's Collection Position, numbered from 1 to N;</li>
-          <li><strong>r</strong> = monthly TVC rate, calculated as the annual rate divided by 12;</li>
+          <li><strong>r</strong> = weekly TVC rate, calculated as the annual rate divided by 52;</li>
           <li><strong>P</strong> = base pool, calculated as N × M;</li>
           <li><strong>P_net</strong> = adjusted Payout after applying the TVC adjustment.</li>
         </ul>
-        <p>11.8. Where the Collection Position is earlier than the pivot position, the formula produces a positive adjustment. Where the Collection Position is later than the pivot position, the formula produces a negative adjustment.</p>
+        <p>11.8. Where the Collection Position is earlier than the pivot position, the formula produces a negative adjustment. Where the Collection Position is later than the pivot position, the formula produces a positive adjustment.</p>
         <p>11.9. A Collection Position equal to the pivot position produces no TVC adjustment.</p>
         <p>11.10. The TVC is an adjustment in the distribution of the Circle's Payouts. It is not a separate fee charged by Thrifty.</p>
         <p>11.11. Neither Thrifty nor the Community Admin separately receives, holds, collects or distributes TVC as a standalone payment. It is reflected through the Payout calculation and the corresponding allocation of the Circle pool.</p>
@@ -654,11 +655,11 @@
 
         <h4>12. Platform maintenance fee</h4>
         <p>12.1. The Platform Maintenance Fee is charged for the provision, maintenance and operation of the Thrifty software application.</p>
-        <p>12.2. The Maintenance Fee is calculated at <strong>1.5% of the adjusted Payout after TVC</strong>.</p>
+        <p>12.2. The Maintenance Fee is <strong>0% for the five-week sandbox trial</strong>.</p>
         <p>12.3. The calculation is:</p>
-        <div class="formula">Maintenance Fee = P_net × 0.015</div>
-        <p>12.4. The amount payable to the Co-Saver after deduction of the Maintenance Fee is:</p>
-        <div class="formula">Final Payout = P_net × 0.985</div>
+        <div class="formula">Maintenance Fee = P_net × 0 = £0.00</div>
+        <p>12.4. The amount payable to the Co-Saver after the trial fee calculation is:</p>
+        <div class="formula">Final Payout = P_net</div>
         <p>12.5. The Community Admin deducts the Maintenance Fee from the relevant Circle pool and transfers the deducted amount to Thrifty.</p>
         <p>12.6. The Maintenance Fee is a cost borne by the Co-Savers through the Circle's Payout calculation. It is not an additional personal charge imposed on a person merely for introducing, sponsoring or providing access to a community.</p>
         <p>12.7. The Community Admin must ensure that the Maintenance Fee is calculated correctly, deducted only once for the relevant Payout and transferred to Thrifty.</p>
@@ -875,7 +876,7 @@
             <li>Contributions are paid directly into the dedicated Circle Account provided or designated by the Community Partner/Admin.</li>
             <li>Thrifty does not receive, hold or distribute Contributions or Payout funds.</li>
             <li>The TVC adjustment is calculated using the formula disclosed in Clause 11.</li>
-            <li>The Platform Maintenance Fee is 1.5% of the adjusted Payout after TVC and is deducted by the Community Admin from the Circle pool before being transferred to Thrifty.</li>
+            <li>The Platform Maintenance Fee is 0% during this five-week sandbox trial; no fee is deducted or transferred.</li>
             <li>Participation in a Savings Circle is voluntary and subject to its agreed Circle Rules.</li>
             <li>The Platform does not guarantee Contributions, Payouts or the conduct of any Community Partner, Community Admin or Co-Saver.</li>
             <li>You have had the opportunity to review these Terms and the applicable Circle Rules before participating.</li>
