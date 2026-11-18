@@ -1555,8 +1555,8 @@ footer a:hover { color: var(--g); }
           const grossGbpNum = grossPence / 100;
           const tvcGbpNum = tvcPence / 100;
           let directionText = "";
-          if (T < pivot) directionText = `(${recipientName} collects early, so adjustment is subtracted)`;
-          else if (T > pivot) directionText = `(${recipientName} collects late, so adjustment is added)`;
+          if (T < pivot) directionText = `(${recipientName} collects early, so adjustment is added)`;
+          else if (T > pivot) directionText = `(${recipientName} collects late, so adjustment is subtracted)`;
           else directionText = `(At the midpoint, no adjustment)`;
 
           document.getElementById('math-calculation-strings').innerHTML = `
@@ -1566,7 +1566,7 @@ footer a:hover { color: var(--g); }
               pivot = (${N} + 1) / 2 = ${pivot}<br>
               T = ${T} (${recipientName}'s Slot)<br>
               r = ${annualRate} / 52 = ${r.toFixed(6)} (weekly rate)<br>
-              <span style="color: var(--muted);">Adjustment = (${T} - ${pivot}) × £${M.toFixed(2)} × ${r.toFixed(6)} × ${N} = ${tvcGbpNum >= 0 ? '+' : ''}£${tvcGbpNum.toFixed(2)}</span> ${directionText}<br>
+              <span style="color: var(--muted);">Adjustment = (${pivot} - ${T}) × £${M.toFixed(2)} × ${r.toFixed(6)} × ${N} = ${tvcGbpNum >= 0 ? '+' : ''}£${tvcGbpNum.toFixed(2)}</span> ${directionText}<br>
               <span style="color: var(--g); font-weight: 600;">P_net = £${grossGbpNum.toFixed(2)} + (${tvcGbpNum >= 0 ? '+' : ''}£${tvcGbpNum.toFixed(2)}) = £${(netPence/100).toFixed(2)}</span>
             </div>
           `;
