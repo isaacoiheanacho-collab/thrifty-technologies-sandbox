@@ -1869,14 +1869,7 @@ footer a:hover { color: var(--g); }
       const yAxis = document.getElementById('chart-yaxis');
       const barsEl = document.getElementById('chart-bars');
 
-      // 1. Scale to the largest actual collection; contribution amount is configurable.
-      const maxCollectedGbp = Math.max(0, ...(tenants || []).map(t => Number(t.totalContributionPence || 0) / 100));
-      const chartMaxGbp = Math.max(1000, Math.ceil(maxCollectedGbp / 1000) * 1000);
-      const yLabels = [];
-      for (let i = 12; i >= 0; i--) {
-        yLabels.push('£' + Math.round((i / 12) * chartMaxGbp).toLocaleString());
-      }
-      yAxis.innerHTML = yLabels.map(v => `<div>${v}</div>`).join('');
+      // Chart scale is calculated from confirmed contributions returned for the visible tenants.
 
       // 2. Sort tenants OLDEST FIRST so Tn 1 is always the oldest tenant.
       const sortedTenants = (tenants || []).slice().sort((a, b) => {
@@ -1905,6 +1898,14 @@ footer a:hover { color: var(--g); }
           currentTenure: t.currentTenure || 1,
         };
       }));
+
+      const maxCollectedGbp = Math.max(0, ...enriched.map(t => t.totalPence / 100));
+      const chartMaxGbp = Math.max(1000, Math.ceil(maxCollectedGbp / 1000) * 1000);
+      const yLabels = [];
+      for (let i = 12; i >= 0; i--) {
+        yLabels.push('£' + Math.round((i / 12) * chartMaxGbp).toLocaleString());
+      }
+      yAxis.innerHTML = yLabels.map(v => `<div>${v}</div>`).join('');
 
       // 4. Fetch next beneficiary slot per tenant
       let payoutsByTenant = {};
@@ -2893,7 +2894,7 @@ footer a:hover { color: var(--g); }
               <td data-label="Status"><span class="badge badge--${statusBadge}">${t.status}</span></td>
               <td data-label="Cycle">${t.currentCycle}</td>
               <td data-label="Tenure">${t.currentTenure}</td>
-              <td data-label="Members">${t.memberCount} / 12</td>
+              <td data-label="Members">${t.memberCount} / 5</td>
               <td data-label="Details"><div class="table__actions">
                 <button class="btn btn--primary btn--sm" data-view-members="${t.id}" data-tenant-name="${escapeHtml(t.name || '')}">View Members</button>
               </div></td>
