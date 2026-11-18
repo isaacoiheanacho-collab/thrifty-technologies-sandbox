@@ -42,7 +42,7 @@
     ? apiOverride
     : (isLocal
         ? 'http://localhost:4005'
-        : 'https://rosca-thrift.onrender.com');
+        : 'https://rosca-thrift-sandbox.onrender.com');
 
   // ── localStorage keys ─────────────────────────────────────────
   // These MUST be stable across deploys so that users logged in on an
