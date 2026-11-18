@@ -2606,7 +2606,7 @@ footer a:hover { color: var(--g); }
     loadContributionReminderPreview();
 
     async function confirmContribution(intentId) {
-      const amtStr = window.prompt('Confirm the amount received (in pence, e.g. 100000 = £1,000):', '100000');
+      const amtStr = window.prompt('Confirm the amount received (in pence, e.g. 20000 = £200):', '20000');
       if (!amtStr) return;
       const amount = parseInt(amtStr, 10);
       if (!isFinite(amount) || amount <= 0) { toast('Amount must be a positive integer.', 'error'); return; }
