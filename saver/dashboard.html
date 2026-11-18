@@ -316,6 +316,7 @@ footer a:hover { color: var(--g); }
 </style>
 </head>
 <body>
+<div role="status" aria-label="Sandbox trial notice" style="background:#073f32;color:#d8f99b;text-align:center;padding:8px 12px;font:700 11px/1.4 Inter,Arial,sans-serif;letter-spacing:.06em;">SANDBOX TRIAL · 5 CO-SAVERS · 5 WEEKLY CYCLES · 9.09% P.A. TVC · 0% PLATFORM FEE</div>
 
 <div id="network-banner">You are offline — we'll retry when you're back.</div>
 
@@ -658,7 +659,7 @@ footer a:hover { color: var(--g); }
             <div style="background: var(--bg); padding: 16px; border-radius: 8px; border: 1px solid var(--line);">
               <div class="form-label">Gross Pool</div>
               <div style="font-size: 20px; font-weight: 700;" id="math-gross">£0.00</div>
-              <div style="font-size: 12px; color: var(--muted); margin-top: 8px;">12 members × £1,000 contribution</div>
+              <div style="font-size: 12px; color: var(--muted); margin-top: 8px;">5 co-savers × weekly contribution</div>
             </div>
             <div style="background: var(--bg); padding: 16px; border-radius: 8px; border: 1px solid var(--line);">
               <div class="form-label">Time-Value Contribution (TVC)</div>
@@ -672,7 +673,7 @@ footer a:hover { color: var(--g); }
             <div style="background: var(--bg); padding: 16px; border-radius: 8px; border: 1px solid var(--line);">
               <div class="form-label">Platform Fee</div>
               <div style="font-size: 20px; font-weight: 700; color: #e32626;" id="math-fee">£0.00</div>
-              <div style="font-size: 12px; color: var(--muted); margin-top: 8px;">1.5% of pot after TVC</div>
+              <div style="font-size: 12px; color: var(--muted); margin-top: 8px;">0% platform fee during this sandbox trial</div>
             </div>
           </div>
           
@@ -731,7 +732,7 @@ footer a:hover { color: var(--g); }
       <section class="section" id="section-renewal">
         <div class="page-header">
           <h1>Renewal Vote</h1>
-          <p>Vote to continue for another year.</p>
+          <p>This five-week sandbox trial ends after the fifth weekly cycle; renewal is disabled.</p>
         </div>
         <div id="renewal-content" class="card" style="display: none;">
           <div class="card__title">Should this circle renew for tenure 2?</div>
@@ -743,7 +744,7 @@ footer a:hover { color: var(--g); }
         </div>
         <div id="renewal-empty" class="empty" style="display: none;">
           <h3>No active vote</h3>
-          <p>Voting will open when cycle 12 is complete.</p>
+          <p>No renewal vote is available in this sandbox trial.</p>
         </div>
       </section>
 
@@ -1257,9 +1258,9 @@ footer a:hover { color: var(--g); }
         const cycleData = await api('/api/tenants/me/contributions');
         const members = cycleData.members || [];
         const confirmed = members.filter(m => m.intentState === 'CONFIRMED');
-        const total = members.length || 12;
+        const total = state.tenant.memberCount || 5;
 
-        document.getElementById('stat-members').textContent = total + ' / 12';
+        document.getElementById('stat-members').textContent = members.length + ' / ' + total;
         document.getElementById('stat-contributed').textContent = confirmed.length + ' / ' + total;
         document.getElementById('stat-pending').textContent = (total - confirmed.length) + ' / ' + total;
 
@@ -1550,7 +1551,7 @@ footer a:hover { color: var(--g); }
             ? "Your Cycle Payout Calculation"
             : `Cycle ${tenantRes.tenant.currentCycle} Payout Calculation (For ${recipientName}, Slot ${recipientSlot})`;
 
-          const N = 12; const M = 1000; const annualRate = 0.02; const r = annualRate / 12; const pivot = (N + 1) / 2;
+          const N = Number(tenantRes.tenant.memberCount || 5); const M = grossGbpNum / N; const annualRate = 0.0909; const r = annualRate / 52; const pivot = (N + 1) / 2;
           const grossGbpNum = grossPence / 100;
           const tvcGbpNum = tvcPence / 100;
           let directionText = "";
@@ -1564,8 +1565,8 @@ footer a:hover { color: var(--g); }
               P = ${N} × £${M} = £${grossGbpNum.toFixed(2)}<br>
               pivot = (${N} + 1) / 2 = ${pivot}<br>
               T = ${T} (${recipientName}'s Slot)<br>
-              r = ${annualRate} / 12 = ${r.toFixed(6)}<br>
-              <span style="color: var(--muted);">Adjustment = (${T} - ${pivot}) × £${M} × ${r.toFixed(6)} × ${N} = ${tvcGbpNum >= 0 ? '+' : ''}£${tvcGbpNum.toFixed(2)}</span> ${directionText}<br>
+              r = ${annualRate} / 52 = ${r.toFixed(6)} (weekly rate)<br>
+              <span style="color: var(--muted);">Adjustment = (${T} - ${pivot}) × £${M.toFixed(2)} × ${r.toFixed(6)} × ${N} = ${tvcGbpNum >= 0 ? '+' : ''}£${tvcGbpNum.toFixed(2)}</span> ${directionText}<br>
               <span style="color: var(--g); font-weight: 600;">P_net = £${grossGbpNum.toFixed(2)} + (${tvcGbpNum >= 0 ? '+' : ''}£${tvcGbpNum.toFixed(2)}) = £${(netPence/100).toFixed(2)}</span>
             </div>
           `;
@@ -1779,7 +1780,7 @@ footer a:hover { color: var(--g); }
         const status = data.status;
 
         if (status.renewalState === 'VOTING') {
-          text.textContent = 'Voting is open! All 12 members must agree to renew.';
+          text.textContent = 'Renewal voting is disabled in this sandbox trial.';
           actions.style.display = 'flex';
           actions.querySelectorAll('button').forEach(function(b) {
             b.disabled = data.myVote !== 'PENDING';
