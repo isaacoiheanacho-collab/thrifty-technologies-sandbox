@@ -41,7 +41,7 @@
   const API_BASE = apiOverride
     ? apiOverride
     : (isLocal
-        ? 'http://localhost:4001'
+        ? 'http://localhost:4005'
         : 'https://rosca-thrift.onrender.com');
 
   // ── localStorage keys ─────────────────────────────────────────
