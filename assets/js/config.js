@@ -51,7 +51,7 @@
     // Environment
     API_BASE: API_BASE,
     IS_LOCAL: isLocal,
-    IS_PROD: !isLocal && !apiOverride,
+    IS_PROD: !isLocal,
     DEBUG: isLocal, // verbose console logging in local only
 
     // Storage
