@@ -14,10 +14,10 @@
   'use strict';
 
   // ── Environment detection ─────────────────────────────────────
-  // If the page is served from localhost / 127.0.0.1, we assume the
-  // developer is running the backend locally on port 4001.
-  // Anything else (production domain, staging, preview) points at the
-  // deployed backend.
+  // Local sandbox frontend development uses the local sandbox backend
+  // on port 4005. Every non-local deployment uses the sandbox backend.
+  // There is deliberately no URL query override: this frontend must
+  // never be redirected to the production API by a query parameter.
   const host = window.location.hostname;
   const isLocal =
     host === 'localhost' ||
@@ -25,24 +25,9 @@
     host === '0.0.0.0' ||
     host.endsWith('.local');
 
-  // Optional ?api=https://staging.example.com override — handy for testing
-  // a staging backend from a local browser without editing this file.
-  let apiOverride = null;
-  try {
-    const qs = new URLSearchParams(window.location.search);
-    const fromQuery = qs.get('api');
-    if (fromQuery && /^https?:\/\//i.test(fromQuery)) {
-      apiOverride = fromQuery.replace(/\/+$/, '');
-    }
-  } catch (_) {
-    // URLSearchParams unsupported or malformed URL — ignore.
-  }
-
-  const API_BASE = apiOverride
-    ? apiOverride
-    : (isLocal
-        ? 'http://localhost:4005'
-        : 'https://rosca-thrift-sandbox.onrender.com');
+  const API_BASE = isLocal
+    ? 'http://localhost:4005'
+    : 'https://rosca-thrift-sandbox.onrender.com';
 
   // ── localStorage keys ─────────────────────────────────────────
   // These MUST be stable across deploys so that users logged in on an
