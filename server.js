@@ -1,7 +1,7 @@
 /**
  * Tiny static file server.
  *
- * Serves whatever folder this file lives in at http://localhost:3000
+ * Serves whatever folder this file lives in at http://localhost:3005
  *
  * To run:  node serve.js
  * To stop: Ctrl+C in the terminal, or just close the window.
@@ -13,7 +13,7 @@ const http = require('http');
 const fs = require('fs');
 const path = require('path');
 
-const PORT = 3000;
+const PORT = 3005;
 const ROOT = __dirname;
 
 const MIME_TYPES = {
