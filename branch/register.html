@@ -6,7 +6,7 @@
   <link rel="apple-touch-icon" href="/icons/icon-192.png">
   <link rel="icon" type="image/svg+xml" href="/icons/favicon.svg">
   <meta name="theme-color" content="#073F32">
-  <title>Become a Community Partner Admin — ROSCA Thrift &amp; Savings</title>
+  <title>Register for the ROSCA Sandbox Trial — Thrifty Technologies</title>
 
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -279,18 +279,22 @@
 <div class="page">
   <div class="card">
 
-    <div class="brand"><img class="brand-logo" src="/assets/brand/rosca-logo.svg" alt="ROSCA Thrift & Savings"></div>
+    <div class="brand">
+      <div class="brand__top">THRIFTY TECHNOLOGIES · SANDBOX TRIAL</div>
+      <img class="brand-logo" src="/assets/brand/rosca-logo.svg" alt="ROSCA Thrift & Savings">
+    </div>
 
-    <h1>Become a Community Partner Admin</h1>
+    <h1>Register for the ROSCA Sandbox</h1>
     <p class="subtitle">
-      Set up your community in two minutes. Once your phone is verified,
-      your application goes to the platform operator for approval.
+      Create your Trial Partner account and set up your five-Co-Saver branch.
+      The sandbox is a five-week trial with five weekly payout cycles and a £200 contribution per Co-Saver per cycle.
+      Your branch is limited to one trial circle. After registration, verify your phone and await platform operator approval.
     </p>
 
     <form id="branch-register-form" novalidate>
 
       <fieldset>
-        <legend>Your Community</legend>
+        <legend>Your Sandbox Trial Branch</legend>
 
         <div class="form-row">
           <label class="form-label" for="branch-name">Community name</label>
@@ -327,7 +331,7 @@
       </fieldset>
 
       <fieldset>
-        <legend>Your admin account</legend>
+        <legend>Your Trial Partner Account</legend>
 
         <div class="form-row">
           <label class="form-label" for="admin-name">Your full name</label>
@@ -369,15 +373,15 @@
       </label>
 
       <button type="submit" class="btn btn--primary btn--block" id="submit-btn">
-        Create my community
+        Register for the Sandbox Trial
       </button>
 
       <div class="status" id="form-status"></div>
     </form>
 
     <div class="footer-note">
-      Already have a community partner admin account?
-      <a href="/?login=1">Log in</a>
+      Already registered for the ROSCA Sandbox Trial?
+      <a href="/?login=1">Sandbox Login</a>
     </div>
 
   </div>
@@ -501,7 +505,7 @@
         await api('/api/branches/onboard', { method: 'POST', body });
 
         setStatus(
-          '✓ Community submitted.\n\n' +
+          '✓ Sandbox trial branch submitted.\n\n' +
           'Your application is now pending approval by the platform operator. ' +
           'Next: verify your phone so we can reach you.\n\n' +
           'Redirecting to phone verification…',
@@ -532,10 +536,10 @@
               : '';
           setStatus('Please check the form.' + (first ? ' — ' + first : ''), 'error');
         } else {
-          setStatus((err && err.message) || 'Could not create the community. Try again.', 'error');
+          setStatus((err && err.message) || 'Could not register your sandbox trial branch. Try again.', 'error');
         }
         submitBtn.disabled = false;
-        submitBtn.textContent = 'Create my community';
+        submitBtn.textContent = 'Register for the Sandbox Trial';
       }
     });
   })();
