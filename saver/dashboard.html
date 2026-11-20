@@ -1583,14 +1583,14 @@ footer a:hover { color: var(--g); }
             ? "Your Cycle Payout Calculation"
             : `Cycle ${tenantRes.tenant.currentCycle} Payout Calculation (For ${recipientName}, Slot ${recipientSlot})`;
 
+          const grossGbpNum = grossPence / 100;
           const N = Number(tenantRes.tenant.memberCount || 5); const M = grossGbpNum / N; const annualRateBps = Number(tenantRes.tenant.tvcAnnualRateBps || 0); const annualRate = annualRateBps / 10000; const annualRatePercent = annualRateBps / 100; const r = annualRate / 104; const pivot = (N + 1) / 2;
           const rateLabel = annualRateBps > 0 ? annualRatePercent.toFixed(2) + '% p.a. adjustment' : 'Backend-derived annual rate unavailable';
           document.getElementById('math-tvc-rate-label').textContent = rateLabel;
-          const grossGbpNum = grossPence / 100;
           const tvcGbpNum = tvcPence / 100;
           let directionText = "";
-          if (T < pivot) directionText = `(${recipientName} collects early, so adjustment is added)`;
-          else if (T > pivot) directionText = `(${recipientName} collects late, so adjustment is subtracted)`;
+          if (T < pivot) directionText = `(${recipientName} collects early, so adjustment is subtracted)`;
+          else if (T > pivot) directionText = `(${recipientName} collects late, so adjustment is added)`;
           else directionText = `(At the midpoint, no adjustment)`;
 
           document.getElementById('math-calculation-strings').innerHTML = `
