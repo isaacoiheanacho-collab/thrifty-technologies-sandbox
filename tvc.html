@@ -53,7 +53,7 @@
   <main class="tvc-main">
     <span class="eyebrow">Five-member sandbox trial</span>
     <h1>Time-Value Collection (TVC)</h1>
-    <p class="lede">TVC adjusts each payout according to its collection position. Under the agreed pivot-minus-position formula, earlier collection positions receive a positive adjustment and later positions receive a corresponding negative adjustment. The midpoint position has no adjustment.</p>
+    <p class="lede">TVC adjusts each payout according to its collection position. Under the backend formula, earlier collection positions receive a negative adjustment and later positions receive a corresponding positive adjustment. The midpoint position has no adjustment.</p>
 
     <div class="stats" aria-label="Standard circle details">
       <div class="stat"><strong>5</strong><span>Co-Savers in the circle</span></div>
@@ -81,7 +81,7 @@
       </div>
       <div class="panel">
         <h3>3. TVC adjustment</h3>
-        <div class="formula">Adjustment = (Pivot − T) × M × r × N</div>
+        <div class="formula">Adjustment = P × (2T − (N + 1)) × r × N</div>
         <p>Where T is the co-saver's slot number, N is the number of co-savers, P is the gross pool, and r is the annual TVC rate divided by 104. The annual rate is derived by the backend and shown in the saver dashboard.</p>
       </div>
       <div class="panel">
@@ -97,20 +97,20 @@
 
     <section class="section">
       <h2>All 5 collection positions</h2>
-      <p>The following illustration assumes all 5 co-savers have contributed £200 for the week. Amounts are shown to the nearest penny.</p>
+      <p>The following illustration shows the five-member sandbox trial payout schedule after all five £200 contributions have been confirmed. The backend-derived rate is applied to the actual circle configuration. Amounts are shown to the nearest penny.</p>
       <div class="table-wrap">
         <table>
           <thead><tr><th>Slot</th><th>TVC adjustment</th><th>Adjusted payout</th><th>Maintenance fee (0%)</th><th>Final payout</th></tr></thead>
           <tbody>
-            <tr><td>1</td><td>+£3.50</td><td>£1,003.50</td><td>£0.00</td><td>£1,003.50</td></tr>
-            <tr><td>2</td><td>+£1.75</td><td>£1,001.75</td><td>£0.00</td><td>£1,001.75</td></tr>
+            <tr><td>1</td><td>−£100.00</td><td>£900.00</td><td>£0.00</td><td>£900.00</td></tr>
+            <tr><td>2</td><td>−£50.00</td><td>£950.00</td><td>£0.00</td><td>£950.00</td></tr>
             <tr><td>3</td><td>£0.00</td><td>£1,000.00</td><td>£0.00</td><td>£1,000.00</td></tr>
-            <tr><td>4</td><td>−£1.75</td><td>£998.25</td><td>£0.00</td><td>£998.25</td></tr>
-            <tr><td>5</td><td>−£3.50</td><td>£996.50</td><td>£0.00</td><td>£996.50</td></tr>
+            <tr><td>4</td><td>+£50.00</td><td>£1,050.00</td><td>£0.00</td><td>£1,050.00</td></tr>
+            <tr><td>5</td><td>+£100.00</td><td>£1,100.00</td><td>£0.00</td><td>£1,100.00</td></tr>
           </tbody>
         </table>
       </div>
-      <p class="note">The TVC adjustments total zero across the five positions (subject to penny rounding). The adjustment reallocates the £1,000 gross pool between collection positions; it is not a separate payment to Thrifty. No maintenance fee is charged in this trial.</p>
+      <p class="note">The TVC adjustments total zero across the five positions (subject to penny rounding). The adjustment reallocates the payout amounts across collection positions; it is not a separate payment to Thrifty. No maintenance fee is charged in this trial.</p>
     </section>
 
     <section class="section">
