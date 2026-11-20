@@ -316,7 +316,7 @@ footer a:hover { color: var(--g); }
 </style>
 </head>
 <body>
-<div role="status" aria-label="Sandbox trial notice" style="background:#073f32;color:#d8f99b;text-align:center;padding:8px 12px;font:700 11px/1.4 Inter,Arial,sans-serif;letter-spacing:.06em;">SANDBOX TRIAL · 5 CO-SAVERS · 5 WEEKLY CYCLES · 9.09% P.A. TVC · 0% PLATFORM FEE</div>
+<div role="status" aria-label="Sandbox trial notice" id="sandbox-trial-notice" style="background:#073f32;color:#d8f99b;text-align:center;padding:8px 12px;font:700 11px/1.4 Inter,Arial,sans-serif;letter-spacing:.06em;">SANDBOX TRIAL · 5 CO-SAVERS · 5 WEEKLY CYCLES · TVC RATE LOADING · 0% PLATFORM FEE</div>
 
 <div id="network-banner">You are offline — we'll retry when you're back.</div>
 
@@ -664,7 +664,7 @@ footer a:hover { color: var(--g); }
             <div style="background: var(--bg); padding: 16px; border-radius: 8px; border: 1px solid var(--line);">
               <div class="form-label">Time-Value Contribution (TVC)</div>
               <div style="font-size: 20px; font-weight: 700; color: #d97706;" id="math-tvc">£0.00</div>
-              <div style="font-size: 12px; color: var(--muted); margin-top: 8px;">9.09% p.a. adjustment</div>
+              <div id="math-tvc-rate-label" style="font-size: 12px; color: var(--muted); margin-top: 8px;">Backend-derived annual rate</div>
             </div>
             <div style="background: var(--bg); padding: 16px; border-radius: 8px; border: 1px solid var(--line);">
               <div class="form-label">Pot After TVC</div>
@@ -935,6 +935,19 @@ footer a:hover { color: var(--g); }
   </div>
  </div>
 </div>
+<div class="modal" id="sandbox-trial-complete-modal" role="dialog" aria-modal="true" aria-labelledby="sandbox-trial-complete-title">
+  <div class="modal__content" style="max-width:560px;text-align:center;padding:32px 26px;">
+    <div style="width:58px;height:58px;margin:0 auto 18px;border-radius:50%;background:#e8f7ef;color:#087443;display:flex;align-items:center;justify-content:center;font-size:30px;font-weight:800;">✓</div>
+    <h2 id="sandbox-trial-complete-title" style="font-size:24px;font-weight:800;color:var(--ink);margin:0 0 12px;">Your Sandbox Live Free Trial has ended</h2>
+    <p style="color:var(--muted);font-size:14px;line-height:1.7;margin:0 0 12px;">Congratulations. Your five-member savings circle has completed all five collection cycles, and all five payouts have been confirmed.</p>
+    <p style="color:var(--muted);font-size:14px;line-height:1.7;margin:0 0 22px;">The free trial is now complete. It will not start another tenure or convert automatically to the live platform. If you encountered any issues or have suggestions, please contact our team.</p>
+    <div style="display:flex;flex-direction:column;gap:10px;">
+      <a href="/contact.html" class="btn btn--ghost" style="display:block;text-decoration:none;">Contact the Team — Issues &amp; Suggestions</a>
+      <a href="https://thrifty-technologies.vercel.app/" class="btn btn--primary" style="display:block;text-decoration:none;">Proceed to the Live ROSCA Thrift Platform</a>
+      <button type="button" class="btn btn--ghost" id="close-sandbox-trial-complete">Review My Trial Records</button>
+    </div>
+  </div>
+</div>
 <div id="toast-container"></div>
 
 <script src="https://cdn.socket.io/4.7.5/socket.io.min.js"></script>
@@ -1052,6 +1065,10 @@ footer a:hover { color: var(--g); }
     document.getElementById('back-btn').addEventListener('click',goToPreviousSection);
     document.querySelectorAll('.mobile-nav-item[data-section]').forEach(function(e){e.addEventListener('click',function(){showSection(e.dataset.section);});});
     document.querySelectorAll('.mobile-drawer-item[data-nav]').forEach(function(e){e.addEventListener('click',function(){showSection(e.dataset.nav);});});
+
+    document.getElementById('close-sandbox-trial-complete').addEventListener('click', function () {
+      document.getElementById('sandbox-trial-complete-modal').classList.remove('is-open');
+    });
 
     // ── Logout (intentional — wipes tokens, that's correct) ──
     document.getElementById('logout-btn').addEventListener('click', async function () {
@@ -1241,7 +1258,19 @@ footer a:hover { color: var(--g); }
       try {
         const res = await api('/api/tenants/me');
         state.tenant = res.tenant;
-        
+
+        const annualRateBps = Number(res.tenant.tvcAnnualRateBps || 0);
+        const annualRateLabel = annualRateBps > 0
+          ? (annualRateBps / 100).toFixed(2) + '% P.A. TVC'
+          : 'TVC RATE UNAVAILABLE';
+        const trialNotice = document.getElementById('sandbox-trial-notice');
+        if (trialNotice) trialNotice.textContent = 'SANDBOX TRIAL · 5 CO-SAVERS · 5 WEEKLY CYCLES · ' + annualRateLabel + ' · 0% PLATFORM FEE';
+
+        if (res.tenant.status === 'COMPLETED') {
+          const completionModal = document.getElementById('sandbox-trial-complete-modal');
+          if (completionModal) completionModal.classList.add('is-open');
+        }
+
         // Populate Top Counters
         document.getElementById('stat-slot').textContent = res.mySlot;
         document.getElementById('stat-cycle').textContent = res.tenant.currentCycle;
@@ -1554,7 +1583,9 @@ footer a:hover { color: var(--g); }
             ? "Your Cycle Payout Calculation"
             : `Cycle ${tenantRes.tenant.currentCycle} Payout Calculation (For ${recipientName}, Slot ${recipientSlot})`;
 
-          const N = Number(tenantRes.tenant.memberCount || 5); const M = grossGbpNum / N; const annualRate = 0.0909; const r = annualRate / 52; const pivot = (N + 1) / 2;
+          const N = Number(tenantRes.tenant.memberCount || 5); const M = grossGbpNum / N; const annualRateBps = Number(tenantRes.tenant.tvcAnnualRateBps || 0); const annualRate = annualRateBps / 10000; const annualRatePercent = annualRateBps / 100; const r = annualRate / 104; const pivot = (N + 1) / 2;
+          const rateLabel = annualRateBps > 0 ? annualRatePercent.toFixed(2) + '% p.a. adjustment' : 'Backend-derived annual rate unavailable';
+          document.getElementById('math-tvc-rate-label').textContent = rateLabel;
           const grossGbpNum = grossPence / 100;
           const tvcGbpNum = tvcPence / 100;
           let directionText = "";
@@ -1568,8 +1599,9 @@ footer a:hover { color: var(--g); }
               P = ${N} × £${M} = £${grossGbpNum.toFixed(2)}<br>
               pivot = (${N} + 1) / 2 = ${pivot}<br>
               T = ${T} (${recipientName}'s Slot)<br>
-              r = ${annualRate} / 52 = ${r.toFixed(6)} (weekly rate)<br>
-              <span style="color: var(--muted);">Adjustment = (${pivot} - ${T}) × £${M.toFixed(2)} × ${r.toFixed(6)} × ${N} = ${tvcGbpNum >= 0 ? '+' : ''}£${tvcGbpNum.toFixed(2)}</span> ${directionText}<br>
+              Annual TVC rate = ${annualRatePercent.toFixed(2)}%<br>
+              r = annual rate / 104 = ${r.toFixed(8)}<br>
+              <span style="color: var(--muted);">Adjustment = P × (2T − (N + 1)) × r = £${grossGbpNum.toFixed(2)} × (${2 * T - (N + 1)}) × ${r.toFixed(8)} = ${tvcGbpNum >= 0 ? '+' : ''}£${tvcGbpNum.toFixed(2)}</span> ${directionText}<br>
               <span style="color: var(--g); font-weight: 600;">P_net = £${grossGbpNum.toFixed(2)} + (${tvcGbpNum >= 0 ? '+' : ''}£${tvcGbpNum.toFixed(2)}) = £${(netPence/100).toFixed(2)}</span>
             </div>
           `;
