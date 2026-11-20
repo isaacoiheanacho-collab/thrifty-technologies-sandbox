@@ -920,6 +920,16 @@ footer a:hover { color: var(--g); }
         Your account is not yet linked to a branch. If this is unexpected, contact the platform operator.
       </div>
 
+      <div class="banner" id="sandbox-trial-complete-banner" role="status" style="display:none;padding:18px 20px;border-radius:var(--radius);margin-bottom:24px;background:#e8f7ef;border:1px solid #0b8f62;color:#075b42;">
+        <div style="font-weight:800;font-size:16px;margin-bottom:6px;">Your Sandbox Live Free Trial has ended</div>
+        <p style="margin:0 0 8px;line-height:1.6;">Your five-member savings circle has completed all five collection cycles, and all five payouts have been confirmed. The trial is complete; no new tenure will start automatically.</p>
+        <p style="margin:0 0 12px;line-height:1.6;">Thank you for taking part. If you encountered any issues or have suggestions, please contact our team.</p>
+        <div style="display:flex;flex-wrap:wrap;gap:10px;align-items:center;">
+          <a href="/contact.html" class="btn btn--ghost btn--sm" style="background:#fff;text-decoration:none;">Contact the Team — Issues &amp; Suggestions</a>
+          <a href="https://thrifty-technologies.vercel.app/" class="btn btn--primary btn--sm" style="text-decoration:none;">Proceed to the Live ROSCA Thrift Platform</a>
+        </div>
+      </div>
+
       <!-- ═══ DASHBOARD ═══ -->
       <section class="section is-active" id="section-dashboard">
         <div class="hero" id="hero-welcome">
@@ -1846,6 +1856,9 @@ footer a:hover { color: var(--g); }
       try {
         const summary = await api('/api/branch-admin/tenants/summary');
         state.tenants = summary.tenants || [];
+        const trialComplete = state.tenants.some(t => t.status === 'COMPLETED');
+        const completionBanner = document.getElementById('sandbox-trial-complete-banner');
+        if (completionBanner) completionBanner.style.display = trialComplete ? 'block' : 'none';
         await renderContributionChart(state.tenants);
       } catch (err) {
         console.error('[dashboard] tenants failed', err);
