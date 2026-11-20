@@ -940,10 +940,10 @@ footer a:hover { color: var(--g); }
     <div style="width:58px;height:58px;margin:0 auto 18px;border-radius:50%;background:#e8f7ef;color:#087443;display:flex;align-items:center;justify-content:center;font-size:30px;font-weight:800;">✓</div>
     <h2 id="sandbox-trial-complete-title" style="font-size:24px;font-weight:800;color:var(--ink);margin:0 0 12px;">Your Sandbox Live Free Trial has ended</h2>
     <p style="color:var(--muted);font-size:14px;line-height:1.7;margin:0 0 12px;">Congratulations. Your five-member savings circle has completed all five collection cycles, and all five payouts have been confirmed.</p>
-    <p style="color:var(--muted);font-size:14px;line-height:1.7;margin:0 0 22px;">The free trial is now complete. It will not start another tenure or convert automatically to the live platform. If you encountered any issues or have suggestions, please contact our team.</p>
+    <p style="color:var(--muted);font-size:14px;line-height:1.7;margin:0 0 12px;">The free trial is now complete. Contributions are closed, and no further tenure will start automatically.</p>
+    <p style="color:var(--muted);font-size:14px;line-height:1.7;margin:0 0 22px;">If you are interested in continuing with the live ROSCA Thrift service, please contact your Branch Admin. Your Branch Admin can create a branch on the live platform and guide you on the next steps. For trial issues or suggestions, please contact our team.</p>
     <div style="display:flex;flex-direction:column;gap:10px;">
       <a href="/contact.html" class="btn btn--ghost" style="display:block;text-decoration:none;">Contact the Team — Issues &amp; Suggestions</a>
-      <a href="https://thrifty-technologies.vercel.app/" class="btn btn--primary" style="display:block;text-decoration:none;">Proceed to the Live ROSCA Thrift Platform</a>
       <button type="button" class="btn btn--ghost" id="close-sandbox-trial-complete">Review My Trial Records</button>
     </div>
   </div>
@@ -1404,6 +1404,15 @@ footer a:hover { color: var(--g); }
       const poolCard = document.getElementById('pool-account-card');
       const content = document.getElementById('contribution-content');
       const empty = document.getElementById('contribution-empty');
+
+      if (state.tenant && state.tenant.status === 'COMPLETED') {
+        poolCard.style.display = 'none';
+        content.style.display = 'none';
+        empty.style.display = 'block';
+        empty.querySelector('h3').textContent = 'Your Sandbox Live Free Trial has ended';
+        empty.querySelector('p').textContent = 'All five collection cycles and payouts are complete. Contributions are closed. If you are interested in continuing on the live platform, please contact your Branch Admin.';
+        return;
+      }
 
       try {
         try {
